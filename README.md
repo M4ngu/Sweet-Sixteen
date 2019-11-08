@@ -3,8 +3,6 @@ Eurorack version of the 16n Faderbank with the addition of 16 inputs
 
 ![Sweet Sixteen](20191105_181811.jpg)
 
-![Sweet Sixteen](20191105_181423 copia.jpg)
-
 [firmware](_16n_faderbank_firmware_Sweet/)
 
 [hardware](hardware/)
