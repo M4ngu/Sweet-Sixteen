@@ -20324,6 +20324,9 @@ Source: Sibalco Kycon KUSBVX-BS1N-xxx.pdf</description>
 <text x="264.16" y="121.92" size="2.54" layer="91">Minijack-MIDI and 
 Protocol Switching</text>
 <text x="340.36" y="170.18" size="2.54" layer="91">I2C Breakout</text>
+<text x="325.12" y="22.86" size="2.54" layer="94">cc-by-sa</text>
+<text x="314.96" y="30.48" size="2.54" layer="94">Maangu Díaz 2019</text>
+<text x="307.34" y="43.18" size="2.54" layer="94">tesseract.modular@gmail.com</text>
 </plain>
 <instances>
 <instance part="GND1" gate="1" x="363.22" y="243.84" rot="R180">
@@ -21716,6 +21719,9 @@ Protocol Switching</text>
 <sheet>
 <description>Buffers / OpAmp power</description>
 <plain>
+<text x="238.76" y="-17.78" size="2.54" layer="94">cc-by-sa</text>
+<text x="228.6" y="-10.16" size="2.54" layer="94">Maangu Díaz 2019</text>
+<text x="220.98" y="2.54" size="2.54" layer="94">tesseract.modular@gmail.com</text>
 </plain>
 <instances>
 <instance part="U3" gate="A" x="15.24" y="215.9" rot="MR180">
@@ -23851,7 +23857,7 @@ Protocol Switching</text>
 </sheet>
 <sheet>
 <plain>
-<text x="307.34" y="20.32" size="2.54" layer="94">cc-by-sa</text>
+<text x="307.34" y="7.62" size="2.54" layer="94">cc-by-sa</text>
 <text x="297.18" y="15.24" size="2.54" layer="94">Maangu Díaz 2019</text>
 <text x="289.56" y="27.94" size="2.54" layer="94">tesseract.modular@gmail.com</text>
 <text x="345.44" y="20.32" size="2.54" layer="94">Power supply</text>
