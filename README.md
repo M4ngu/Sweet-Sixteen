@@ -5,6 +5,8 @@ Eurorack version of the 16n Faderbank with the addition of 16 inputs
 
 [firmware](_16n_faderbank_firmware_Sweet/)
 
+[harware](hardware/)
+
 There are 16 channels, which can be used as:
 
  -Midi controller
