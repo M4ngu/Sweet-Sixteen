@@ -29,7 +29,7 @@ The modifications in the firmware are minimal, added the possibility of choosing
 
 ## [hardware](hardware/)
 
-There are 16 faders/channels, which can be used as:
+### There are 16 faders/channels, which can be used as:
 
  -Midi controller
 
@@ -43,7 +43,7 @@ There are 16 faders/channels, which can be used as:
 
  -CV to i2C data
 
-Features:
+### Features:
 
  -16 inputs
  
