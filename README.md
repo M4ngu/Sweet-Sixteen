@@ -1,5 +1,5 @@
 # Sweet-Sixteen
-Based in the [16n faderbank][16n-faderbank/16n]. 
+Eurorack module based in the [16n faderbank][16n-faderbank/16n]. 
 
 ## The following changes were made to the original hardware:
 
@@ -19,18 +19,17 @@ Based in the [16n faderbank][16n-faderbank/16n].
 
 -USB type B connector pcb mounted has been also added. Those connectors are much stronger than mini or micro ones, the USB 5V pin is not connected, this way you can update the firmware of the Teensy without powering off the module.
 
-![PCB](https://drive.google.com/open?id=1RQQywInrdLrokVbciNo3aFkrljGUPfUZ)
+![PCB](sweet_pcb.jpg)
 
 The modifications in the firmware are minimal, added the possibility of choosing PitchBend instead of MidiCC (which gives much better resolution using the Midi protocol) and also to generate Midi Notes messages, but this last feature still in a experimental stage ...actually it creates a shit load of midi note events, but it could be better implemented in the future.
 
-
 ![Sweet Sixteen](20191105_181811.jpg)
 
-[firmware](_16n_faderbank_firmware_Sweet/)
+## [firmware](_16n_faderbank_firmware_Sweet/)
 
-[hardware](hardware/)
+## [hardware](hardware/)
 
-There are 16 channels, which can be used as:
+There are 16 faders/channels, which can be used as:
 
  -Midi controller
 
