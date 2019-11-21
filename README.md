@@ -63,3 +63,4 @@ Firmware is licensed under the [MIT License][mitlicense].
 [octobom]: https://octopart.com/bom-tool/unJxkzvR
 [ccbysa]: https://creativecommons.org/licenses/by-sa/4.0/
 [mitlicense]: https://opensource.org/licenses/MIT
+[16n-faderbank/16n]: https://github.com/16n-faderbank/16n
