@@ -54,7 +54,7 @@ The modifications in the firmware are minimal, added the possibility of choosing
 This is a derivative work of the [16n faderbank][16n-faderbank/16n].  
 Based on original work by [Brian Crabtree][tehn] and Sean Hellfritsch.  
 Minijack MIDI, I2C circuitry and CV outputs by [Tom Armitage][infovore].  
-Firmware by [Brian Crabtree][tehn], [Tom Armitage][infovore], and [Brendon Cassidy][bpcmusic].
+Firmware by [Brian Crabtree][tehn], [Tom Armitage][infovore], and [Brendon Cassidy][bpcmusic].  
 Hardware & firmware mods by Mangu Díaz 2019.  
 
 ## Licensing
