@@ -42,3 +42,23 @@ Features:
  -i2C via mini jack on front panel and pin header on the back of the module.
 
 This module is a derivative work of the "16n Faderbank" by Brian Crabtree, Sean Hellfritsch, Tom Armitage, Brian Crabtree, Tom Armitage and Brendon Cassidy. CC-BY-SA
+## Credits
+
+Based on original work by [Brian Crabtree][tehn] and Sean Hellfritsch.  
+Minijack MIDI, I2C circuitry and CV outputs by [Tom Armitage][infovore].  
+Firmware by [Brian Crabtree][tehn], [Tom Armitage][infovore], and [Brendon Cassidy][bpcmusic].
+
+## Licensing
+
+Panels and electronic schematics/layouts/gerber files are licensed under
+[Creative Commons Attribution Share-Alike 4.0][ccbysa].
+
+Firmware is licensed under the [MIT License][mitlicense].
+
+[linespost]: https://llllllll.co/t/sixteen-n-faderbank/3643
+[tehn]: https://github.com/tehn
+[bpcmusic]: https://github.com/bpcmusic
+[infovore]: https://github.com/infovore
+[octobom]: https://octopart.com/bom-tool/unJxkzvR
+[ccbysa]: https://creativecommons.org/licenses/by-sa/4.0/
+[mitlicense]: https://opensource.org/licenses/MIT
