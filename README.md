@@ -1,6 +1,7 @@
 # Sweet-Sixteen
 Based in the [16n faderbank][16n-faderbank/16n]. 
-##The following changes were made to the original hardware:
+
+## The following changes were made to the original hardware:
 
 -The UI and PCB layout has been made from scratch, so it's totally different, with 0603 passives instead of 0805.
 
