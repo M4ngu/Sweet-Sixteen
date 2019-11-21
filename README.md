@@ -1,5 +1,5 @@
 # Sweet-Sixteen
-Eurorack version of the 16n Faderbank with the addition of 16 inputs
+Eurorack version of the [16n-faderbank/16n] with the addition of 16 inputs
 
 ![Sweet Sixteen](20191105_181811.jpg)
 
@@ -41,8 +41,9 @@ Features:
  
  -i2C via mini jack on front panel and pin header on the back of the module.
 
-This module is a derivative work of the "16n Faderbank" by Brian Crabtree, Sean Hellfritsch, Tom Armitage, Brian Crabtree, Tom Armitage and Brendon Cassidy. CC-BY-SA
+
 ## Credits
+This is a derivative work of the [16n-faderbank/16n] 
 
 Based on original work by [Brian Crabtree][tehn] and Sean Hellfritsch.  
 Minijack MIDI, I2C circuitry and CV outputs by [Tom Armitage][infovore].  
