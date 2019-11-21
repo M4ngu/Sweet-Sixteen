@@ -1,5 +1,11 @@
 # Sweet-Sixteen
-Eurorack version of the [16n-faderbank/16n] with the addition of 16 inputs
+Based in the [16n faderbank][16n-faderbank/16n], the following changes were made in the hardware:
+
+-The PCB layout is compretly new
+
+-A power section has been added to work within the eurorack modular synth format, with diode protection and the option to power the Teensy with a 5V LDO or the eurorack 5V rail (switchable with a jumper)
+
+![PCB]https://lh3.googleusercontent.com/Elq1ayZZGXsQK5p0A-S--crPwu4DdsH9hsDBSZvOMHxTNBKJrN2qklEanpVfKWG8FPIvnjy56ERZpbgHbj4bKpIKUn7xhZon6FvhDxSas5UfAamzbx2L=w472
 
 ![Sweet Sixteen](20191105_181811.jpg)
 
