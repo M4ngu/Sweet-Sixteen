@@ -1,25 +1,26 @@
 # Sweet-Sixteen
-Based in the [16n faderbank][16n-faderbank/16n], the following changes were made in the hardware:
+Based in the [16n faderbank][16n-faderbank/16n]. The following changes were made to the original hardware:
 
--The PCB layout is compretly new
+-The UI and PCB layout has been made from scratch, so it's totally different, with 0603 passives instead of 0805.
 
--A power section has been added to work within the eurorack modular synth format, with diode protection and the option to power the Teensy with an internal 5V LDO or the eurorack 5V rail (selectable with a jumper on the back of the module).
+-A power section has been added to work within the eurorack modular synth format, with diode protection and the option to power the Teensy with an internal 5V LDO or the eurorack 5V rail (selectable with a jumper on the back of the module). The voltage to feed the faders now comes form a dedicated voltage regulator, more stable and precise than many USB voltage sources.
 
--16 Inputs has been added. A "default voltage" is normalled to the input jacks, so when something is plugged in that normalization is broken. This adition makes the module to work also as 16 attenuators, Cv to 2Midi, Cv to i2C...
+-16 Inputs has been added. A "default voltage" is normalled to the input jacks, so when something is plugged in that normalization is broken, being the incomming CV attenuated by the fader. This adition makes the module to work also as 16 attenuators, Cv to Midi, Cv to i2C...
 
--The op-amps circuit has been modiffied, being actually TL074 for the CV outs and MCP6004 for thecircuit that prepares the voltages to be read by the Teensy. in this version the MCP6004 are powered with 3,3V & GRND (instead of the original 5V), due to the rail-to-rail charasterictic of the MCPs, this provides voltage protection to the Teensy. That is specially handy for the CV inputs, as any voltage plugged in will be limited to 3,3v by the op-amp. Another important modification in this part of the circuit is the addition of negative voltage references and that now is an summing inverting gain circuit (for that reason the FLIP option in the firmware is necessary for this version of the hardware, as in the minimum position of the fader the voltage readed by the Teensy will be 3,3V and in the max position it will be 0V). The TL074s are powered by +12V & -12V.
+-The op-amps circuit has been modiffied, being TL074s for the CV outs and MCP6004s for the circuit that prepares the voltages to be read by the Teensy. In this version the MCP6004 are powered with 3,3V & GND (instead of the original 5V), the rail-to-rail characteristic of those op-amps provides voltage protection to the Teensy. That is specially handy for the CV inputs, as any voltage plugged in, will be limited to 3,3v by the MCP6004s. Another important modification in this part of the circuit is the addition of negative voltage references and also now is an summing inverting gain circuit (for that reason the FLIP option in the firmware is necessary for this version of the hardware, as in the minimum position of the fader the voltage readed by the Teensy will be 3,3V and in the max position it will be 0V). The TL074s are powered by +12V & -12V.
 
--4 slide switches has been added to swap the voltage reference (1 for every 4 faders, there was no room for 16 switches). The reason is to allow vnegative voltages to be coorectly converted to midi CC (or i2C). In the normal position 0V is traduced as minimum CC value, with the switch turned up the voltage reference is -2,5V (instead of -5V) that means that 0V is the center position of the MidiCC, positive voltages willinvrease the value while negative ones will decrease it.
+-Four slide switches has been added to swap the voltage reference (1 for every 4 faders, there was no room for 16 switches). The reason is to allow vnegative voltages to be coorectly converted to midi CC (or i2C). In the normal position 0V is traduced as minimum CC value, with the switch turned up the voltage reference is -2,5V (instead of -5V) that means that 0V is the center position of the MidiCC, positive voltages will increase the value while negative ones will decrease it.
 
--The output voltage of the faders (that "default voltage") has been increassed to 8v, the original 5v seems to be not enough to work in eurorack, like to totally open-close the cutoff of a filter etc. I decided to go 8v instead of 10v because of the Cv inputs, if the circuit that prepares the voltages comming form the faders to be readed by the Teensy is expecting 10v then it will be impossible to cover all the range of a MidiCC with an LFO which is ±4v (or 8v pp). For the contrary, if that circuit is expecting 8V you can not only cover the whole Midi CC range but also saturating the waveform if the voltage source has over 8V pp (like a 10V envelope or a ±5V LFO).
+-The output voltage of the faders (that "default voltage") has been increassed to 8v, the original 5v seems to be not enough to work in eurorack, like to wide open-close the cutoff of a filter etc. I decided to go 8v instead of 10v because of the Cv inputs, if the circuit that prepares the voltages comming from the faders to be readed by the Teensy is expecting 10v then it will be impossible to cover all the range of a MidiCC with an LFO which is ±4v (or 8v pp). For the contrary, if that circuit is expecting 8V it can not only cover the whole Midi CC range but also allows saturating the waveform if the voltage source has over 8V pp (like a 10V envelope or a ±5V LFO).
 
--16 bicolor leds has been addedin parallel with the CV out, allowing visual feedback of what's going on.
+-16 bicolor leds has been added in parallel with the CV out, allowing visual feedback of what's going on each track, specially handy when using the CV inputs.
 
--USB type B connector, pcb mountedhas been also added. For this a SMD header has to be soldered to the + and - pads in the bottom of the Teensy. Those connectors are much stronger than mini or micro ones, the USB 5V pin is notconnected, this way you can update the firmware of the Teensy without powering off the module.
+-USB type B connector pcb mounted has been also added. Those connectors are much stronger than mini or micro ones, the USB 5V pin is not connected, this way you can update the firmware of the Teensy without powering off the module.
 
-The modifications in the firmware are minial, there is the addition of choosing PitchBend instead of MidiCC (which gives much better resolution using the Midi protocol and also to generate Midi Notes messages, but this last feature still in an experimental stage, actually it creates a shit load of midi note events but it could be better implemented in the future.
+![PCB](https://drive.google.com/open?id=1RQQywInrdLrokVbciNo3aFkrljGUPfUZ)
 
-![PCB](https://lh3.googleusercontent.com/Elq1ayZZGXsQK5p0A-S--crPwu4DdsH9hsDBSZvOMHxTNBKJrN2qklEanpVfKWG8FPIvnjy56ERZpbgHbj4bKpIKUn7xhZon6FvhDxSas5UfAamzbx2L=w472)
+The modifications in the firmware are minimal, added the possibility of choosing PitchBend instead of MidiCC (which gives much better resolution using the Midi protocol) and also to generate Midi Notes messages, but this last feature still in a experimental stage ...actually it creates a shit load of midi note events, but it could be better implemented in the future.
+
 
 ![Sweet Sixteen](20191105_181811.jpg)
 
