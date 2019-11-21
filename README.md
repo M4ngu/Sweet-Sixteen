@@ -3,7 +3,15 @@ Based in the [16n faderbank][16n-faderbank/16n], the following changes were made
 
 -The PCB layout is compretly new
 
--A power section has been added to work within the eurorack modular synth format, with diode protection and the option to power the Teensy with a 5V LDO or the eurorack 5V rail (switchable with a jumper)
+-A power section has been added to work within the eurorack modular synth format, with diode protection and the option to power the Teensy with an internal 5V LDO or the eurorack 5V rail (selectable with a jumper on the back of the module).
+
+-16 Inputs has been added. A "default voltage" is normalled to the input jacks, so when something is plugged in that normalization is broken. This adition makes the module to work also as 16 attenuators, Cv to 2Midi, Cv to i2C...
+
+-The MCP6004 circuit has been modiffied, in this version the op-amps are powered with 3,3V (instead of the original 5V), due to the rail-to-rail charasterictic of the MCPs this provides voltage protection to the Teensy. That is specially handy for the CV inputs, as any voltage plugged in will be limited to 3,3v by the op-amp. Another important modification in this part of the circuit is the addition of negative voltage references and that now is an summing inverting gain circuit (for that reason the FLIP option in the firmware is necessary for this version of the hardware, as in the minimum position of the fader the voltage readed by the Teensy will be 3,3V and in the max position it will be 0V).
+
+-$ switches has been added to swap the voltage reference (1for
+
+-The output voltage of the faders (that "default voltage") has been increassed to 8v, the original 5v seems to be not enough to work in eurorack, like to totally open-close the cutoff of a filter etc. I decided to go 8v instead of 10v because of the Cv inputs, if the circuit that prepares the voltages comming form the faders to be readed by the Teensy is expecting 10v then it will be impossible to cover all the range of a MidiCC with an LFO which is ±4v (or 8v pp). For the contrary, if that circuit is expecting 8V you can not only cover the whole Midi CC range but also saturating the waveform if the voltage source has over 8V pp (like a 10V envelope or a ±5V LFO).
 
 ![PCB](https://lh3.googleusercontent.com/Elq1ayZZGXsQK5p0A-S--crPwu4DdsH9hsDBSZvOMHxTNBKJrN2qklEanpVfKWG8FPIvnjy56ERZpbgHbj4bKpIKUn7xhZon6FvhDxSas5UfAamzbx2L=w472)
 
