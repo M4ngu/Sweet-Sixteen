@@ -1,6 +1,6 @@
 If you want to order pcbs yourself make sure you have a valid replacement for the faders, the ones I use may have a weird pinout. You can also edit the board in order to use your desired fader model.
 
-The voltage of the faders (when there's nothing plugged in) could be easy modified by replacing the IC4 for another LDO and changing the value of the summing resistors in the MCP6004 circuits, in order to get 3,3v (or similar) from the LDO once passes throught the op-amp.
+The voltage of the faders (when there's nothing plugged in) could be easy modified by replacing the IC4 for another LDO and changing the value of the summing resistors in the MCP6004 circuits, in order to get 3,3v (or close) from the LDO once passes throught the op-amp.
 
 The formula is pretty simple: 
 
