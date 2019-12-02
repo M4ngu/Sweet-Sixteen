@@ -1,7 +1,7 @@
 # Sweet-Sixteen
 Eurorack module based in the [16n faderbank][16n-faderbank/16n]. 
 
-![Sweet Sixteen](20191105_181811.jpg)
+![Sweet Sixteen](SweetSixteen_.jpg)
 
 ## The following changes were made to the original hardware:
 
