@@ -1,6 +1,8 @@
 # Sweet-Sixteen
 Eurorack module based in the [16n faderbank][16n-faderbank/16n]. 
 
+![Sweet Sixteen](20191105_181811.jpg)
+
 ## The following changes were made to the original hardware:
 
 -The PCB layout has been made from scratch, so it's totally different, with 0603 passives instead of 0805.
@@ -22,8 +24,6 @@ Eurorack module based in the [16n faderbank][16n-faderbank/16n].
 ![PCB](sweet_pcb.jpg)
 
 The modifications in the firmware are minimal, added the possibility of choosing PitchBend instead of MidiCC (which gives much better resolution using the Midi protocol) and also to generate Midi Notes messages, but this last feature still in a experimental stage ...actually it creates a ton of Midi note events, but it could be better implemented in the future.
-
-![Sweet Sixteen](20191105_181811.jpg)
 
 ## [firmware](_16n_faderbank_firmware_Sweet/)
 
