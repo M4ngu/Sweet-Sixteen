@@ -28,7 +28,6 @@
 // uncomment this #define and compile the firmware
 //
 // NOTE: in MASTER MODE the 16n will not respond to the Teletype
-//
 //#define MASTER 1
 
 // minimum and maximum values for faders (to deal with tolerances)
@@ -36,7 +35,7 @@
 #define MAXFADER 8155 // original value 8135
 
 // I2C Address for Faderbank. 0x34 unless you ABSOLUTELY know what
-#define I2C_ADDRESS 0x34
+#define I2C_ADDRESS 0x34 // for the ER-301 set to 0x31
 
 #ifdef DEV
 
