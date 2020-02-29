@@ -12,7 +12,7 @@
 
 // flips faders up-down. You almost certainly want #REV enabled as well for this.
 
-#define FLIP 1 // necesary for the Tesseract eurorack version
+#define FLIP 1 // necesary for the Tesseract eurorack version 'Sweet Sixteen'
 
 // activates printing of debug messages
 // #define DEBUG 1
@@ -28,14 +28,19 @@
 // uncomment this #define and compile the firmware
 //
 // NOTE: in MASTER MODE the 16n will not respond to the Teletype
-//#define MASTER 1
+//
+#define MASTER 1 
 
 // minimum and maximum values for faders (to deal with tolerances)
-#define MINFADER 12 //  original value 15
-#define MAXFADER 8155 // original value 8135
+#define MINFADER 10 //  original 16n value 15
+#define MAXFADER 8160 // original 16n value 8135
 
 // I2C Address for Faderbank. 0x34 unless you ABSOLUTELY know what
-#define I2C_ADDRESS 0x34 // for the ER-301 set to 0x31
+#define I2C_ADDRESS 0x34 
+
+// this adds some delay before the boot-up, necesary for the ER-301, which needs to be ON before the Sweet Sixteen, 
+// time is represented in milliseconds, leave uncomment to enable this option
+#define bootDelay 10000
 
 #ifdef DEV
 
@@ -60,10 +65,10 @@ const int ports[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13,
 
 // set up CCs.
 // if you wish to have different CCs for TRS and USB, specify them here.
-// FOR PITCH BEND USE "128" ON BOTH USB AND TRS
+// FOR PITCH BEND USE "128"
 // FOR MIDI NOTE USE "129"
-const int usb_ccs[] = {128, 128, 128, 128, 128, 128, 128, 128, 40, 41, 42, 43, 44, 45, 46, 47};
-const int trs_ccs[] = {128, 128, 128, 128, 128, 128, 128, 128, 40, 41, 42, 43, 44, 45, 46, 47};
+const int usb_ccs[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 128, 47};
+const int trs_ccs[] = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 128};
 
 // set up MIDI channels for each fader
 // if you wish to have different channels for TRS and USB - or for each channel - specify them here.

@@ -15,7 +15,7 @@
  * ALL configuration should take place in config.h.
  * You can disable/enable flags, and configure  MIDI channels in there.
  */
-// mod for pitchbend & midi note by Mangu Díaz
+// mod for pitchbend, midi note & boot-up delay by Mangu Díaz
 #include "config.h"
 #include <i2c_t3.h>
 #include <MIDI.h>
@@ -31,6 +31,7 @@ int i, temp;
 
 // midi write helpers
 int q, shiftyTemp, notShiftyTemp;
+bool midiChange = false;
 
 // the storage of the values; current is in the main loop; last value is for midi output
 int volatile currentValue[channelCount];
@@ -79,6 +80,11 @@ int activeMode = 0;
  */
 void setup()
 {
+#ifdef bootDelay // whait some time before boot-up
+
+delay(bootDelay);
+
+#endif
 
 #ifdef DEBUG
   while (!Serial)
@@ -190,16 +196,9 @@ void loop()
 #endif
 
     temp = constrain(temp, MINFADER, MAXFADER);
-    // if pitchbend is selected the scaling is different
-    if ( usb_ccs[i] == 128 ) 
-    {
-      temp = map(temp, MINFADER, MAXFADER, -8192, 8191 );
-    }
-    else
-    {
+
       temp = map(temp, MINFADER, MAXFADER, 0, 16383); 
-    }
-    
+
     // map and update the value
     currentValue[i] = temp;
   }
@@ -261,59 +260,73 @@ void doMidiWrite()
   {
 
     notShiftyTemp = currentValue[q];
-    if ( usb_ccs[q] == 128 ) // for PitchBend the resolution isn't reduced
+
+    // shift for MIDI precision (0-127)
+    shiftyTemp = notShiftyTemp >> 7; 
+
+    // if there was a change in the midi value
+    if (( usb_ccs[q] == 128 ) || ( trs_ccs[q] == 128 )) 
     {
-      shiftyTemp = notShiftyTemp;       
+      if (notShiftyTemp != lastValue[q])
+      {
+        midiChange = true;
+      }
     }
     else
     {
-      // shift for MIDI precision (0-127)
-      shiftyTemp = notShiftyTemp >> 7; 
+      if (shiftyTemp != lastMidiValue[q])
+      {
+        midiChange = true;
+      }
     }
-    
 
-    // if there was a change in the midi value
-    if (shiftyTemp != lastMidiValue[q])
+    if ( midiChange == true)  
     {
-
-      if ( usb_ccs[q] == 128 ) //PITCH BEND
-      {
-        usbMIDI.sendPitchBend(shiftyTemp, usb_channels[q]);
-      }
-      if ( usb_ccs[q] == 129 ) //MIDI NOTE
-      {
-        usbMIDI.sendNoteOff(lastMidiValue[q], defVel, usb_channels[q]);
-        if ( shiftyTemp != 0 )
-        {
-          usbMIDI.sendNoteOn(shiftyTemp, defVel, usb_channels[q]);
-        }     
-      }
       if ( usb_ccs[q] < 128 )
       {  // send the message over USB
         usbMIDI.sendControlChange(usb_ccs[q], shiftyTemp, usb_channels[q]);
       }
-
-      if ( trs_ccs[q] == 128 ) 
+      else
       {
-        MIDI.sendPitchBend(shiftyTemp, trs_channels[q]);     
+        if ( usb_ccs[q] == 128 ) //PITCH BEND
+        {
+          usbMIDI.sendPitchBend((notShiftyTemp - 8192), usb_channels[q]);
+        }
+        if ( usb_ccs[q] == 129 ) //MIDI NOTE
+        {
+          usbMIDI.sendNoteOff(lastMidiValue[q], defVel, usb_channels[q]);
+          if ( shiftyTemp != 0 )
+          {
+            usbMIDI.sendNoteOn(shiftyTemp, defVel, usb_channels[q]);
+          }     
+        }
       }
-      if ( trs_ccs[q] == 129 ) // midi note - trs
+
+      if ( trs_ccs[q] < 128 ) 
+      {  // send the message over physical MIDI
+        MIDI.sendControlChange(trs_ccs[q], shiftyTemp, trs_channels[q]);
+      }
+      else
       {
-  
+        if ( trs_ccs[q] == 128 ) //PITCH BEND
+        {
+          MIDI.sendPitchBend((notShiftyTemp - 8192), trs_channels[q]);     
+        }
+        if ( trs_ccs[q] == 129 ) // midi note - trs
+        {
           MIDI.sendNoteOff(lastMidiValue[q], defVel, trs_channels[q]);
           if ( shiftyTemp != 0 )
           {
             MIDI.sendNoteOn(shiftyTemp, defVel, trs_channels[q]);
           }              
-      }      
-      if ( trs_ccs[q] < 128 ) 
-      {  // send the message over physical MIDI
-        MIDI.sendControlChange(trs_ccs[q], shiftyTemp, trs_channels[q]);
+        }     
       }
-
+  
       // store the shifted value for future comparison
       lastMidiValue[q] = shiftyTemp;
 
+      midiChange = false;
+      
 #ifdef DEBUG
       Serial.printf("MIDI[%d]: %d\n", q, shiftyTemp);
 #endif
