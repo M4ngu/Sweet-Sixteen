@@ -25,6 +25,10 @@ Eurorack module based in the [16n faderbank][16n-faderbank/16n].
 
 The modifications in the firmware are minimal, added a boot-up delay (to make it work with the ER-301) and the possibility of choosing PitchBend instead of MidiCC (which gives much better resolution using the Midi protocol) and also to generate Midi Notes messages, but this last feature still in a experimental stage ...actually it creates a ton of Midi note events, but it could be better implemented in the future.
 
+Manual and build guide:
+
+https://www.tesseractmodular.com/manuals/sweet-sixteen-manual
+
 ## [firmware](_16n_faderbank_firmware_Sweet/)
 
 ## [hardware](hardware/)
