@@ -1,21 +1,22 @@
 /*
- * 16n Faderbank Firmware
- * (c) 2017,2018 by Brian Crabtree, Sean Hellfritsch, Tom Armitage, and Brendon Cassidy
- * MIT License
- */
+   16n Faderbank Firmware
+   (c) 2017,2018 by Brian Crabtree, Sean Hellfritsch, Tom Armitage, and Brendon Cassidy
+   MIT License
+*/
 
 /*
- * NOTES:
- * - Hardware MIDI is on pin 1
- * - You **must** also compile this with Tools->USB type set to MIDI or MIDI/Serial (for debugging)
- * - You also should overclock to 120MHz to make it as snappy as possible
- */
+   NOTES:
+   - Hardware MIDI is on pin 1
+   - You **must** also compile this with Tools->USB type set to MIDI or MIDI/Serial (for debugging)
+   - You also should overclock to 120MHz to make it as snappy as possible
+*/
 
 /*
- * ALL configuration should take place in config.h.
- * You can disable/enable flags, and configure  MIDI channels in there.
- */
-// mod for pitchbend, midi note & boot-up delay by Mangu Díaz
+   ALL configuration should take place in config.h.
+   You can disable/enable flags, and configure  MIDI channels in there.
+*/
+// mod for pitchbend & boot-up delay by Mangu Díaz
+
 #include "config.h"
 #include <i2c_t3.h>
 #include <MIDI.h>
@@ -31,17 +32,15 @@ int i, temp;
 
 // midi write helpers
 int q, shiftyTemp, notShiftyTemp;
-bool midiChange = false;
 
 // the storage of the values; current is in the main loop; last value is for midi output
 int volatile currentValue[channelCount];
-
 int lastMidiValue[channelCount];
-
-#ifdef MASTER
 
 // memory of the last unshifted value
 int lastValue[channelCount];
+
+#ifdef MASTER
 
 // the i2c message buffer we are sending
 uint8_t messageBuffer[4];
@@ -76,14 +75,13 @@ int activeInput = 0;
 int activeMode = 0;
 
 /*
- * The function that sets up the application
- */
+   The function that sets up the application
+*/
 void setup()
 {
+
 #ifdef bootDelay // whait some time before boot-up
-
-delay(bootDelay);
-
+  delay(bootDelay);
 #endif
 
 #ifdef DEBUG
@@ -92,7 +90,7 @@ delay(bootDelay);
   Serial.print("16n Firmware Debug Mode\n");
 #endif
 
-// initialize the TX Helper
+  // initialize the TX Helper
 #ifdef V125
   TxHelper::UseWire1(true);
 #else
@@ -109,22 +107,22 @@ delay(bootDelay);
   {
     // analog[i] = new ResponsiveAnalogRead(0, false);
 
-    analog[i] = new ResponsiveAnalogRead(0, true, .0001); 
+    analog[i] = new ResponsiveAnalogRead(0, true, .0001);
     analog[i]->setAnalogResolution(1 << 13);
-    
+
     // ResponsiveAnalogRead is designed for 10-bit ADCs
-    // meanining its threshold defaults to 4. Let's bump that for 
+    // meanining its threshold defaults to 4. Let's bump that for
     // our 13-bit adc by setting it to 4 << (13-10)
     analog[i]->setActivityThreshold(32);
 
     currentValue[i] = 0;
     lastMidiValue[i] = 0;
-#ifdef MASTER
+    //#ifdef MASTER
     lastValue[i] = 0;
-#endif
+    //#endif
   }
 
-// i2c using the default I2C pins on a Teensy 3.2
+  // i2c using the default I2C pins on a Teensy 3.2
 #ifdef MASTER
 
 #ifdef DEBUG
@@ -168,8 +166,8 @@ delay(bootDelay);
 }
 
 /*
- * The main read loop that goes through all of the sliders
- */
+   The main read loop that goes through all of the sliders
+*/
 void loop()
 {
   // read loop using the i counter
@@ -197,7 +195,7 @@ void loop()
 
     temp = constrain(temp, MINFADER, MAXFADER);
 
-      temp = map(temp, MINFADER, MAXFADER, 0, 16383); 
+    temp = map(temp, MINFADER, MAXFADER, 0, 16383);
 
     // map and update the value
     currentValue[i] = temp;
@@ -221,18 +219,18 @@ void loop()
 }
 
 /*
- * Tiny function called via interrupt
- * (it's important to catch inbound MIDI messages even if we do nothing with
- * them.)
- */
+   Tiny function called via interrupt
+   (it's important to catch inbound MIDI messages even if we do nothing with
+   them.)
+*/
 void readMidi()
 {
   shouldDoMidiRead = true;
 }
 
 /*
- * Function called when shouldDoMidiRead flag is HIGH
- */
+   Function called when shouldDoMidiRead flag is HIGH
+*/
 
 void doMidiRead()
 {
@@ -241,104 +239,63 @@ void doMidiRead()
 }
 
 /*
- * Tiny function called via interrupt
- */
+   Tiny function called via interrupt
+*/
 void writeMidi()
 {
   shouldDoMidiWrite = true;
 }
 
 /*
- * The function that writes changes in slider positions out the midi ports
- * Called when shouldDoMidiWrite flag is HIGH
- */
+   The function that writes changes in slider positions out the midi ports
+   Called when shouldDoMidiWrite flag is HIGH
+*/
 void doMidiWrite()
 {
   // write loop using the q counter (
   // (can't use i or temp cuz this might interrupt the reads)
   for (q = 0; q < channelCount; q++)
   {
-
     notShiftyTemp = currentValue[q];
 
     // shift for MIDI precision (0-127)
-    shiftyTemp = notShiftyTemp >> 7; 
+    shiftyTemp = notShiftyTemp >> 7;
 
     // if there was a change in the midi value
-    if (( usb_ccs[q] == 128 ) || ( trs_ccs[q] == 128 )) 
-    {
-      if (notShiftyTemp != lastValue[q])
-      {
-        midiChange = true;
-      }
-    }
-    else
-    {
-      if (shiftyTemp != lastMidiValue[q])
-      {
-        midiChange = true;
-      }
-    }
-
-    if ( midiChange == true)  
+    if (( shiftyTemp != lastMidiValue[q]) || ((( usb_ccs[q] == 128 ) || ( trs_ccs[q] == 128 )) && ( notShiftyTemp != lastValue[q] )))
     {
       if ( usb_ccs[q] < 128 )
-      {  // send the message over USB
+      { // send the message over USB
         usbMIDI.sendControlChange(usb_ccs[q], shiftyTemp, usb_channels[q]);
       }
       else
       {
-        if ( usb_ccs[q] == 128 ) //PITCH BEND
-        {
-          usbMIDI.sendPitchBend((notShiftyTemp - 8192), usb_channels[q]);
-        }
-        if ( usb_ccs[q] == 129 ) //MIDI NOTE
-        {
-          usbMIDI.sendNoteOff(lastMidiValue[q], defVel, usb_channels[q]);
-          if ( shiftyTemp != 0 )
-          {
-            usbMIDI.sendNoteOn(shiftyTemp, defVel, usb_channels[q]);
-          }     
-        }
+        usbMIDI.sendPitchBend((notShiftyTemp - 8192), usb_channels[q]);
       }
 
-      if ( trs_ccs[q] < 128 ) 
-      {  // send the message over physical MIDI
+      if ( trs_ccs[q] < 128 )
+      { // send the message over physical MIDI
         MIDI.sendControlChange(trs_ccs[q], shiftyTemp, trs_channels[q]);
       }
       else
       {
-        if ( trs_ccs[q] == 128 ) //PITCH BEND
-        {
-          MIDI.sendPitchBend((notShiftyTemp - 8192), trs_channels[q]);     
-        }
-        if ( trs_ccs[q] == 129 ) // midi note - trs
-        {
-          MIDI.sendNoteOff(lastMidiValue[q], defVel, trs_channels[q]);
-          if ( shiftyTemp != 0 )
-          {
-            MIDI.sendNoteOn(shiftyTemp, defVel, trs_channels[q]);
-          }              
-        }     
+        MIDI.sendPitchBend((notShiftyTemp - 8192), trs_channels[q]);
       }
-  
+
       // store the shifted value for future comparison
       lastMidiValue[q] = shiftyTemp;
 
-      midiChange = false;
-      
 #ifdef DEBUG
       Serial.printf("MIDI[%d]: %d\n", q, shiftyTemp);
 #endif
     }
-
-#ifdef MASTER
 
     // we send out to all three supported i2c slave devices
     // keeps the firmware simple :)
 
     if (notShiftyTemp != lastValue[q])
     {
+#ifdef MASTER
 #ifdef DEBUG
       Serial.printf("i2c Master[%d]: %d\n", q, notShiftyTemp);
 #endif
@@ -355,19 +312,17 @@ void doMidiWrite()
 
       // ANSIBLE
       sendi2c(0x20, device << 1, 0x06, port, notShiftyTemp);
-
+#endif
       lastValue[q] = notShiftyTemp;
     }
-
-#endif
   }
 }
 
 #ifdef MASTER
 
 /*
- * Sends an i2c command out to a slave when running in master mode
- */
+   Sends an i2c command out to a slave when running in master mode
+*/
 void sendi2c(uint8_t model, uint8_t deviceIndex, uint8_t cmd, uint8_t devicePort, int value)
 {
 
@@ -393,9 +348,9 @@ void sendi2c(uint8_t model, uint8_t deviceIndex, uint8_t cmd, uint8_t devicePort
 #else
 
 /*
- * The function that responds to a command from i2c.
- * In the first version, this simply sets the port to be read from.
- */
+   The function that responds to a command from i2c.
+   In the first version, this simply sets the port to be read from.
+*/
 void i2cWrite(size_t len)
 {
 
@@ -429,9 +384,9 @@ void i2cWrite(size_t len)
 }
 
 /*
- * The function that responds to read requests over i2c.
- * This uses the port from the write request to determine which slider to send.
- */
+   The function that responds to read requests over i2c.
+   This uses the port from the write request to determine which slider to send.
+*/
 void i2cReadRequest()
 {
 
@@ -443,22 +398,22 @@ void i2cReadRequest()
   uint16_t shiftReady = 0;
   switch (activeMode)
   {
-  case 1:
-    shiftReady = (uint16_t)currentValue[activeInput];
-    break;
-  case 2:
-    shiftReady = (uint16_t)currentValue[activeInput];
-    break;
-  default:
-    shiftReady = (uint16_t)currentValue[activeInput];
-    break;
+    case 1:
+      shiftReady = (uint16_t)currentValue[activeInput];
+      break;
+    case 2:
+      shiftReady = (uint16_t)currentValue[activeInput];
+      break;
+    default:
+      shiftReady = (uint16_t)currentValue[activeInput];
+      break;
   }
 
 #ifdef DEBUG
   Serial.printf("delivering: %d; value: %d [%d]\n", activeInput, currentValue[activeInput], shiftReady);
 #endif
 
-// send the puppy as a pair of bytes
+  // send the puppy as a pair of bytes
 #ifdef V125
   Wire1.write(shiftReady >> 8);
   Wire1.write(shiftReady & 255);
@@ -469,8 +424,8 @@ void i2cReadRequest()
 }
 
 /*
- * Future function if we add more i2c capabilities beyond reading values.
- */
+   Future function if we add more i2c capabilities beyond reading values.
+*/
 void actOnCommand(byte cmd, byte out, int value) {}
 
 #endif
