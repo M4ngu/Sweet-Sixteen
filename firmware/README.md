@@ -1,4 +1,4 @@
-## Firt_version:
+## First_version:
 
 derived from the 16n v1.34 firmware, 
 changes: 
