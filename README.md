@@ -29,7 +29,7 @@ Manual and build guide:
 
 https://www.tesseractmodular.com/manuals/sweet-sixteen-manual
 
-## [firmware](_16n_faderbank_firmware_Sweet/)
+## [firmware](firmware/)
 
 ## [hardware](hardware/)
 
