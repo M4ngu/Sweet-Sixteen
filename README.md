@@ -23,7 +23,7 @@ Eurorack module based in the [16n faderbank][16n-faderbank/16n].
 
 ![PCB](sweet_pcb.jpg)
 
-Various version of the firmware are available, all them derivated from the 16n 
+Various versions of the firmware are available, all them derived from the 16n by Tom Armitage.
 
 Manual and build guide:
 
