@@ -1,6 +1,10 @@
 ## Sweet_3
 
-derived for the 16n 2.0.1 (with web based editor), 
+derived for the 16n 2.0.1  
+
+midiCC, midi channels and master i2c settings can be done in the web editor so compiling your own firmware is not necessary, just download the HEX and flash it with the Teensy loader
+
+https://16n-faderbank.github.io/editor/
 
 changes:
   
