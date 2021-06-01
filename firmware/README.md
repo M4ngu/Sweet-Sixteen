@@ -1,40 +1,20 @@
-## First_version:
-
-derived from the 16n v1.34 firmware, 
-
-changes: 
-
-  allow the use of PitchBend
-  
-  added boot-up delay
- 
-## 2.0.1: 
+## Sweet_3
 
 derived for the 16n 2.0.1 (with web based editor), 
 
 changes:
-
-  'rotate' and i2C 'leader' are activeby default
   
   channel numbers are not reversed if the 'rotate' is active
   
   calibration of the high value is now possible when the 'rotate' is active
 
-## Sweet_mkII
-
-derived from the 16n v1.34 firmware, 
-
-changes:
-
-  allow the use of pitchBend
+  allow the use of pitchBend ( by selecting midiCC 127 )
   
-  added boot-up delay
-  
-  added midi note creation with GESS ( Gate Expander for Sweet Sixteen )
+  added support for GESS ( Gate Expander for Sweet Sixteen ) makes midi notes with gates/buttons
   
     About the GESS feature:
     
-    -every button/gate in will create a midi note in the TRS midi out
+    -every button/gate in will create a midi note in the TRS & USB midi outs
     
     -the pitch and velocity can be a fixed value or CV controlled (upper 8 faders & CV inputs for note value, lower 
     row of fader & CV for velocity)
