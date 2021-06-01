@@ -33,18 +33,25 @@ Some options _do_ remain in `config.h`; they are for developers to specify optio
 In `config.h`
 
 // define startup delay in milliseconds
+
 // for ER-301, which needs to be ON before Sweet Sixteen to connect via i2c
+
 #define BOOTDELAY 10000
 
 // uncomment this to allow PITCHBEND for controller 127:
+
 #define PITCHBEND 1
 
 // allow the Tsesseract Modular GESS & midi note implementation:
+
 #define GESS 1
 
 // default GESS settings (midi note, velocity and channel):
+
 byte _nNote[8] = { 30, 40, 50, 60, 70, 80, 90, 100 };
+
 byte _nVelocity[8] = { 120, 120, 120, 120, 120, 120, 120, 120 };
+
 byte _nChannel[8] = { 1, 2, 3, 4, 5, 6, 7, 8 };
 
 ```C
@@ -68,21 +75,38 @@ Addresses 0-15 are reserved for configuration flags/data.
 FADERMAX and FADERMIN are 14-bit numbers; as such, they are stored in two bytes as MSB and LSB; the actual number is calculated by `(MSB << 8) + LSB`
 
 +---------+--------+------------------------------------+
+
 | Address | Format |            Description             |
+
 +---------+--------+------------------------------------+
+
 | 0       | 0/1    | LED on when powered                |
+
 | 1       | 0/1    | LED blink on MIDI data             |
+
 | 2       | 0/1    | Rotate controller outputs via 180º |
+
 | 3       | 0/1    | I2C Master/Follower                |
+
 | 4,5     | 0-127  | FADERMIN lsb/msb                   |
+
 | 6,7     | 0-127  | FADERMAX lsb/msb                   |
+
 | 8-15    |        | Currently vacant                   |
+
 +---------+--------+------------------------------------+
+
 | 16-31   | 0-15   | Channel for each control (USB)     |
+
 | 32-47   | 0-15   | Channel for each control (TRS)     |
+
 | 48-63   | 0-127  | CC for each control (USB)          |
+
 | 64-79   | 0-127  | CC for each control (TRS)          |
+
 +---------+--------+------------------------------------+
+
+EEPROM address 100-115 is used for GESS presets
 
 ## LICENSING
 
