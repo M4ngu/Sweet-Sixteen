@@ -2,19 +2,19 @@
 
 derived for the 16n 2.0.1  
 
-midiCC, midi channels,master i2c and calibration settings can be done in the web editor so compiling your own firmware is not necessary, just download the HEX file and flash it with the Teensy loader.
+midiCC, midi channels, master i2c and calibration settings can be done in the web editor so compiling your own firmware is not necessary, just download the HEX file and flash it with the Teensy loader.
 
 https://16n-faderbank.github.io/editor/
 
-changes:
+changes from the original 16n 2.0.1 by Tom Armitage:
   
   -channel numbers are not reversed if the 'rotate' is active
   
   -calibration of the high value is now possible when the 'rotate' is active
 
-  -allow the use of pitchBend ( by selecting midiCC 127 )
+  -added pitchBend ( by selecting midiCC 127 )
   
-  -added support for GESS ( Gate Expander for Sweet Sixteen ) makes midi notes with gates/buttons
+  -added support for GESS ( Gate Expander for Sweet Sixteen ) which makes midi notes with gates & buttons in GESS
   
     About the GESS feature:
     
