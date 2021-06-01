@@ -1,12 +1,12 @@
 ## Sweet_3
 
-derived for the 16n 2.0.1  
+derived from the 16n 2.0.1 by Tom Armitage. 
 
 midiCC, midi channels, master i2c and calibration settings can be done in the web editor so compiling your own firmware is not necessary, just download the HEX file and flash it with the Teensy loader.
 
 https://16n-faderbank.github.io/editor/
 
-changes from the original 16n 2.0.1 by Tom Armitage:
+changes from the original 16n 2.0.1:
   
   -channel numbers are not reversed if the 'rotate' is active
   
