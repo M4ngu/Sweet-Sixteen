@@ -88,6 +88,13 @@ int midiDirty = 0;
 const int midiFlashDuration = 50;
 int ledPin = 13;
 
+// midi read helpers
+#define MIDI_CANNEL_OFFSET 20
+int command = 0;
+int channel = 0;
+int data1 = 0;
+int data2 = 0;
+
 // the storage of the values; current is in the main loop; last value is for midi output
 int volatile currentValue[channelCount];
 int lastMidiValue[channelCount];
@@ -469,9 +476,40 @@ void readMidi()
  */
 
 void doMidiRead()
-{
+{  
   MIDI.read();
   usbMIDI.read();
+  
+  if(er301Present) {
+    
+    int acommand = usbMIDI.getType();
+    int achannel = usbMIDI.getChannel()-1+MIDI_CANNEL_OFFSET;
+    int adata1   = usbMIDI.getData1();
+    int adata2   = usbMIDI.getData2();
+     
+    if (command != acommand || channel != achannel || data1 != adata1 || data2 != adata2) {
+      
+      command = acommand;
+      channel = achannel;
+      data1 = adata1;
+      data2 = adata2;
+  
+      switch(command){
+        case 128:
+           D(Serial.printf("do midi read %d %d %d %d\n", command, channel, data1, data2));
+           sendi2c(er301I2Caddress, 0, TO_TR, channel, 0);
+           break;
+        case 144:
+           D(Serial.printf("do midi read %d %d %d %d\n", command, channel, data1, data2));
+           sendi2c(er301I2Caddress, 0, TO_TR, channel, 1);
+           // data1 == c-2 == data1-21 = A0 
+           sendi2c(er301I2Caddress, 0, TO_CV, channel, (data1 - 21) * 136.5416);
+           break;
+      }
+      
+    }
+  }
+  
 }
 
 /*
