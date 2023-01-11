@@ -38,6 +38,21 @@
 #define D(x)
 #endif
 
+#define TO_TR 0x00
+#define TO_TR_TOG 0x01
+#define TO_TR_TIME 0x02
+#define TO_TR_TIME_S 0x03
+#define TO_TR_TIME_M 0x04
+#define TO_TR_PULSE 0x05
+#define TO_TR_POL 0x06
+
+#define TO_CV 0x10
+#define TO_CV_SET 0x11
+#define TO_CV_SLEW 0x12
+#define TO_CV_SLEW_S 0x13
+#define TO_CV_SLEW_M 0x14
+#define TO_CV_OFF 0x15
+
 #ifdef GESS // only necessary for GESS & midi note thing
 // panel led and function button pins:
 const int  Led_ = 12;
@@ -547,11 +562,23 @@ void doMidiWrite()
         }
         MIDI.sendNoteOn(_nNote[k], _nVelocity[k], _nChannel[k] ); // at the moment channels are 1 to 8 preassigned
         usbMIDI.sendNoteOn(_nNote[k], _nVelocity[k], _nChannel[k] );
+        // ER-301
+        if(er301Present) {
+           // https://github.com/odevices/er-301/blob/develop/mods/teletype/Dispatcher.cpp
+           // SC.TR 1-n α --> Set TR value to α (0/1)
+           // commandTRSet(delay, getPort(msg), getValue(msg));
+           sendi2c(er301I2Caddress, 0, TO_TR, q-8, 1);
+        }
+        
       }
       else //Note Off
       {
         MIDI.sendNoteOff(_nNote[k], _nVelocity[k], _nChannel[k] );
         usbMIDI.sendNoteOff(_nNote[k], _nVelocity[k], _nChannel[k] );
+        if(er301Present) {
+           sendi2c(er301I2Caddress, 0, TO_TR, q-8, 0);
+        }
+        
       }
       old_G[k] = _G[k];
     }  //end of midi note code
@@ -577,7 +604,7 @@ void doMidiWrite()
 
         // ER-301
         if(er301Present) {
-          sendi2c(er301I2Caddress, 0, 0x11, q, notShiftyTemp);
+          sendi2c(er301I2Caddress, 0, TO_CV_SET, q, notShiftyTemp);
         }
 
         // ANSIBLE
